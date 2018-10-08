@@ -4,28 +4,64 @@ author: "Vanessa Garcia"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(tidyverse)
 ```
 
-## GitHub Documents
+Learning to write our own functions in R
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
 
-## Including Code
+$$x_{t+1} = r x _t \left (1-  \frac{x_t}{K} \right)$$
 
-You can include R code in the document as follows:
 
-```{r cars}
-summary(cars)
+**Now we want to rewrite the function in code which is happening below **
+
+
+```{r}
+
+
+growth<- function(xt, r, K) {
+  
+  (r*xt) *(1-(xt/K))
+  
+}
+  #growth(xt =1, r = 2, K=1)
+  
+``` 
+
+```{r}  
+  simulate<- function(max_time, x0 , r, K ){
+  
+    #r is the birth rate
+
+  x <- numeric(max_time)
+  #creates an empty number vector 
+  x
+  x[1] <- x0  # setting first data point to x1 =100
+  
+  for (t in 1: (max_time-1)) {
+    
+    
+   x[t + 1] <-growth (xt = x[t] , r = r,  K=K)
+  }
+  
+     #loop
+  
+  pop_data <- data_frame(time = 1:max_time, pop_size = x)
+  pop_data
+  #creates dataframe with the created variables
+}
+
 ```
 
-## Including Plots
+```{r}
+simulate(max_time = 50, x0 = 4, r = 1.5, K =100)%>%
+ggplot(aes(time, pop_size))+
+  geom_point()
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
